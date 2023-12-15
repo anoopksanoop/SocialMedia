@@ -1,6 +1,5 @@
 import React from 'react'
 import img from "../images/01.jpg"
-import img7 from "../images/07.jpg"
 import homeImg from "../images/home-outline-filled.svg";
 import personImg from "../images/person-outline-filled.svg"
 import earthImg from  "../images/earth-outline-filled.svg"
@@ -8,7 +7,16 @@ import calenderImg from "../images/calendar-outline-filled.svg"
 import chatImg from "../images/chat-outline-filled.svg"
 import notificationImg from "../images/notification-outlined-filled.svg" 
 import cogImg from "../images/cog-outline-filled.svg"
+import { useSelector } from "react-redux/es/hooks/useSelector";
+import { selectUser } from '../Redux/UserSlice';
+import { Link } from 'react-router-dom';
+import { footContext } from "../Context";
+import { useContext } from 'react';
 const SideNav = () => {
+
+const user =useSelector(selectUser);
+const data = useContext(footContext)
+const { login} = data
   return (
     
   <div className="col-lg-3">
@@ -37,38 +45,46 @@ const SideNav = () => {
           
            
           <div className="card-body pt-0">
-            <div className="text-center">
+            <div className="text-center" >
         
-             
-            <div className="avatar avatar-lg mt-n5 mb-3">
-              <a href="#!"><img className="avatar-img rounded border border-white border-3" src={img7} alt=''/></a>
-            </div>
-             
-             
-            <h5 className="mb-0"> <a href="#!">Sam Lanson </a> </h5>
-            <small>Web Developer at Webestica</small>
-            <p className="mt-3">I'd love to change the world, but they won’t give me the source code.</p>
+            {sessionStorage.user ? ( 
+            <div className="avatar avatar-lg mt-n5 mb-3" >
+        
+             <Link to={"/ProfileAdd"}>
+              <a href=""><img className="avatar-img rounded border border-white border-3" src={`http://localhost:3001/${user.image}`} alt=''/></a>
+              </Link>
+                 
 
+              
+            </div>
+             ):(
+              <h5 className="mb-0"> <a href="">wating for login </a> </h5>
+           )} 
+            <h5 className="mb-0"> <a href="">{user.name} </a> </h5>
+            
+            <small>{user.decs}</small>
+            <p className="mt-3">I'd love to change the world, but they won’t give me the source code.</p>
+            
              
              
             <div className="hstack gap-2 gap-xl-3 justify-content-center">
              
               <div>
-                <h6 className="mb-0">256</h6>
+                <h6 className="mb-0">{user.posts}</h6>
                 <small>Post</small>
               </div>
             
               <div className="vr"></div>
             
               <div>
-                <h6 className="mb-0">2.5K</h6>
+                <h6 className="mb-0">{user.followers}</h6>
                 <small>Followers</small>
               </div>
              
               <div className="vr"></div>
               
               <div>
-                <h6 className="mb-0">365</h6>
+                <h6 className="mb-0">{user.followings}</h6>
                 <small>Following</small>
               </div>
             </div>

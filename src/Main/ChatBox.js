@@ -7,38 +7,82 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/hooks/useSelector";
   import {fetchdata} from "../Redux/Userdatas";
   import { useNavigate } from "react-router";
+  import { selectUser } from "../Redux/UserSlice";
 
 const ChatBox = () => {
-  
-  const data = useContext(footContext)
-  const {value,setvalue}=data
+
   const navigate=useNavigate();
-
   const {socket,messageList,setMessageList,setShowChat} = useContext(footContext);
-  
-
-
   const dispatch=useDispatch()
   const DataList= useSelector((state)=>state.datas);
-  useEffect(()=>{
-    dispatch(fetchdata())
-    //  (DataList)
-  },[dispatch,DataList]);
- 
-  const {id}=useParams();
-  const currentUser = (DataList.data || []).find((p) => p.id=== parseInt(id));
- 
-;
-    
-  const handleJoinRoom=useCallback(()=>{
-    navigate(`/room/${id}`)
-        },[navigate,id])
+  const user = useSelector(selectUser);
 
   const [room, setRoom] = useState("");
   const [currentMessage, setCurrentMessage] = useState('');
   const [username, setUsername] = useState("");
 
-debugger
+  useEffect(()=>{
+    dispatch(fetchdata())
+    //  (DataList)
+  },[]);
+ 
+  const {id}=useParams();
+  const currentUser = (DataList.data || []).find((p) => p.id=== parseInt(id));
+    
+  const handleJoinRoom=()=>{
+    // setLoginUser(parseInt(id))
+    navigate("/HomePage")
+  }
+
+
+
+
+  
+  useEffect(() => {
+    if (socket && currentUser) {
+      
+      // Set the room based on sender and receiver's IDs
+      const otherUserId = parseInt(id); // Assuming this is the ID of the other user you are chatting with
+      const senderId = currentUser.id;
+      const room = `room_${Math.min(senderId, user.id)}_${Math.max(senderId, user.id)}`;
+      setRoom(room);
+
+      const username = currentUser.name;
+      setUsername(username);
+      setShowChat(true);
+
+      socket.emit("join_room", room, user.id);
+
+      socket.on('user_joined', (userId) => {
+        console.log(`User with ID ${userId} joined the room`);
+        // Handle the user joined event (e.g., show a notification)
+      });
+
+      socket.on('receive_message', (data) => {
+        if (Array.isArray(data)) {
+          // If data is an array, it's the chat history
+          setMessageList(data);
+        } else {
+        
+          // If data is a single message
+          setMessageList((list) =>{
+            //debugger 
+            if(list && Array.isArray(list)){
+              return [...list, data]
+            }
+            return [ data ]
+            
+          });
+        }
+      });
+    
+    
+    
+    }
+  }, [socket, id, currentUser]);
+
+
+  
   const sendMessage = async () => {
     if (currentMessage !== '') {
       const messageData = {
@@ -58,45 +102,18 @@ debugger
       });
 
       await socket.emit('send_message', messageData);
-      setMessageList((list) => [...list, messageData]);
+      // setMessageList((list) => {
+      //   // debugger 
+      //   return [...list, messageData]
+      // });
       setCurrentMessage(''); // Clear the input field after sending the message
     }
   };
-
-  
-  useEffect(() => {
-    if (socket && currentUser) {
-      // Set the room based on sender and receiver's IDs
-      const otherUserId = parseInt(id); // Assuming this is the ID of the other user you are chatting with
-      const senderId = currentUser.id;
-      const room = `room_${Math.min(senderId, otherUserId)}_${Math.max(senderId, otherUserId)}`;
-      setRoom(room);
-
-      const username = currentUser.name;
-      setUsername(username);
-
-      setShowChat(true);
-
-      socket.emit("join_room", room, currentUser.id);
-
-      socket.on('receive_message', (data) => {
-        if (Array.isArray(data)) {
-          // If data is an array, it's the chat history
-          setMessageList(data);
-        } else {
-          // If data is a single message
-          setMessageList((list) => [...list, data]);
-        }
-      });
-    }
-  }, [socket, id, currentUser, setShowChat, setMessageList]);
-
-
  
 
-  console.log("id:"+id);
+  // console.log("id:"+id);
   const UserId=(DataList.data||[]).find((p)=>p.id===parseInt(id))
-  console.log(UserId);
+  // console.log(UserId);
 
   if (!UserId) {
     return <div style={{position:" absolute",
@@ -106,9 +123,7 @@ debugger
   }
 
 
-
-
-  
+console.log(setShowChat,"showcchat")
   return (
    
 
@@ -154,7 +169,7 @@ debugger
                   >
                     <i className="bi bi-camera-video-fill"></i>
                   </a>
-                  
+             
                   <div className="dropdown">
                     <a
                       className="icon-md rounded-circle btn btn-primary-soft me-2 px-2"
@@ -165,6 +180,7 @@ debugger
                       data-bs-auto-close="outside"
                       aria-expanded="false"
                     >
+                  
                       <i className="bi bi-three-dots-vertical"></i>
                     </a>
                     <ul
@@ -208,7 +224,7 @@ debugger
               </div>
             
                 
-<div className="chat-conversation-content custom-scrollbar overflow-auto">
+<div className="chat-conversation-content custom-scrollbar ">
 
 {messageList.map((messageContent,index)=>(
               <div  className="" key={index} >
@@ -246,7 +262,7 @@ debugger
               <i className="fa-solid fa-paperclip fs-6"></i>
             </button>
             <div></div>
-            <button className="btn btn-sm btn-primary ms-2" onClick={sendMessage}>
+            <button className="btn btn-sm btn-primary ms-2" onClick={ e => sendMessage()}>
               <i className="fa-solid fa-paper-plane fs-6"></i>
             </button>
           </div>

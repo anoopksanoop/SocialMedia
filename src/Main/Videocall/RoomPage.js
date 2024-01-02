@@ -1,20 +1,22 @@
+
+
+
+
 import React from 'react'
 import {ZegoUIKitPrebuilt} from "@zegocloud/zego-uikit-prebuilt"
 import { useContext } from 'react';
 import { footContext } from '../../Context';
+import { useParams } from 'react-router-dom';
 const RoomPage = () => {
 
-
-  const data = useContext(footContext)
-  const {value}=data
-  console.log("valuess",value)
+  const { id } = useParams();
 
   const myMeeting=async (element)=>{
     const appID=1393827209 ;
     const serverSecret="5ed0192ebf987dad00b55b30d8f23e8d";
     const kitToken= ZegoUIKitPrebuilt.generateKitTokenForTest(appID,
       serverSecret,
-      value,
+      id,
       Date.now().toString(),
       " ");
 
@@ -24,7 +26,7 @@ zc.joinRoom({
   sharedLinks:[
     {
 name:"Copy Link",
-url:`http://localhost:3000/room/${value}`
+url:`http://localhost:3000/room/${id}`
     }
 ],
   scenario:{
@@ -37,7 +39,7 @@ url:`http://localhost:3000/room/${value}`
   return (
     <div >
       <div data-aos="zoom-out-right">
-        <h1  data-aos="fade-right">Room {value}</h1>
+        <h1  data-aos="fade-right">Room {id}</h1>
       </div>
         <div ref={myMeeting}/>
     </div>

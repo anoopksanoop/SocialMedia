@@ -12,8 +12,9 @@ import { selectUser } from '../Redux/UserSlice';
 import { Link } from 'react-router-dom';
 import { footContext } from "../Context";
 import { useContext } from 'react';
+import AOS from 'aos'
 const SideNav = () => {
-
+  AOS.init();
 const user =useSelector(selectUser);
 const data = useContext(footContext)
 const { login} = data
@@ -22,7 +23,7 @@ const { login} = data
   <div className="col-lg-3">
 
  
-<div className="d-flex align-items-center d-lg-none">
+<div className="d-flex align-items-center d-lg-none" >
   <button className="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
     <span className="btn btn-primary"><i className="fa-solid fa-sliders-h"></i></span>
     <span className="h6 mb-0 fw-bold d-lg-none ms-2">My profile</span>
@@ -36,7 +37,7 @@ const { login} = data
       <button type="button" className="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
      
-    <div className="offcanvas-body d-block px-2 px-lg-0">
+    <div className="offcanvas-body d-block px-2 px-lg-0" data-aos="fade-right">
      
        
       <div className="card overflow-hidden"> 

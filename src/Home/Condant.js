@@ -14,7 +14,9 @@ import { useSelector } from "react-redux/es/hooks/useSelector";
 import { selectUser } from "../Redux/UserSlice";
 import { useDispatch } from "react-redux";
 import { selectGroup } from "../Redux/Groupslice";
+import AOS from 'aos'
 const Condant = () => {
+  AOS.init();
   // const dispatch=useDispatch()
   const group= useSelector(selectGroup)
   const user = useSelector(selectUser);
@@ -22,7 +24,7 @@ const Condant = () => {
   console.log("gp",group.Groupdecs)
 
     return (
-        <div className="col-md-8 col-lg-6 vstack gap-4">
+        <div className="col-md-8 col-lg-6 vstack gap-4" data-aos="fade-left">
         
       {/* <!-- Card END --> */ }
 

@@ -14,7 +14,9 @@ import { useDispatch } from 'react-redux';
 import { footContext } from "../Context";
 import { useContext } from 'react';
 
+
 function Header() {
+ 
   const navigte = new useNavigate();
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
@@ -44,9 +46,9 @@ console.log("image:",user.image)
 
   return (
     <div className="App">
-      <header className="navbar-light fixed-top header-static bg-mode">
+      <header className="navbar-light fixed-top header-static bg-mode" >
         <nav className="navbar navbar-expand-lg">
-          <div className="container">
+          <div className="container" >
             <div className="navbar-brand" href=''>
               
                 {" "}

@@ -25,11 +25,10 @@ const { setLogin,setShowChat,socket} = data
 const nav=useNavigate()
 
 
-useEffect(()=>{
-  dispatch(fetchdata())
-   setUserData(DataList)
-},[dispatch,DataList]);
-console.log(userData)
+// useEffect(()=>{
+
+// },[]);
+// console.log(userData)
  
     
   const handleSubmit = async (e,id) => {
@@ -53,8 +52,42 @@ console.log(userData)
     }
 
     const userData = await response.json();
+
     // Handle successful login
     console.log('Login successful:', userData);
+
+    const matchedUser = userData.user;
+
+
+    if (matchedUser) {
+      dispatch(
+        setUser({
+          ...matchedUser,
+          image: matchedUser.image,
+          email: matchedUser.email,
+          password: matchedUser.password,
+          loggedIn: true,
+        })
+      );
+
+      console.log("matched", matchedUser);
+
+      if (socket) {
+        // const room = matchedUser.id;
+        // const username = matchedUser.name;
+        // socket.emit("join_room", room, matchedUser.id);
+        setShowChat(true);
+      }
+
+      nav(`/Home/${matchedUser.id}`);
+      setLogin(true);
+    } else {
+      // alert('User Not Found !!!');
+    }
+
+
+
+
   } catch (error) {
     // Handle login error, show error message, etc.
     console.error('Login error:', error.message);
@@ -80,43 +113,9 @@ console.log(userData)
       return; // Stop further execution
     }
   }
-  
-  // const matchedUser = Array.isArray(DataList) && DataList.find((user) =>user.id===id && user.email === email && user.password === password );
-   const matchedUser = Array.isArray(userData.data) && userData.data.find((data) => data.email === email && data.password === password );
-    // debugger 
-    if (matchedUser) {
-      dispatch(
-        setUser({
-           ...matchedUser,
-           image:matchedUser.image,
-           email:matchedUser.email,
-           password:matchedUser.password, 
-           loggedIn:true, 
-  
-        }),
-        
-    )
-   
-     console.log("matched",matchedUser)
 
-      if(socket){
-        const room =matchedUser.id;
-        const username = matchedUser.name; 
-     socket.emit("join_room", room, matchedUser.id);
-        setShowChat(true); 
-        // Show the chat when joining the room
-      
-      }
-      setid(matchedUser.id); 
-      nav(`/Home/${matchedUser.id}`);
-      console.log("h",matchedUser.id)
-      setLogin(true)
-      // console.log(id)
-    } else {
-      // alert('User Not Found !!!');
-    }
   };
-      // debugger
+      //  debugger
  
   return (
     <Container >

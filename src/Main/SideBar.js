@@ -5,21 +5,26 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/hooks/useSelector";
  import {fetchdata} from "../Redux/Userdatas";
-  
+ import { selectUser } from "../Redux/UserSlice";
+ import { footContext } from "../Context";
+  import { useContext } from "react";
+  import "./SideBar.css"
 const SideBar = () => {
+  const {socket} = useContext(footContext);
+  const user = useSelector(selectUser);
   const dispatch=useDispatch()
-  const DataList= useSelector((state)=>state.datas);
-  useEffect(()=>{
-    dispatch(fetchdata())
-    //  (DataList)
-  },[dispatch,DataList]);
-
-
-  
- 
+  const DataList = useSelector((state) => {
+    // Filter out the logged-in user's ID from the data list
+    const filteredData = state.datas.data.filter((item) => item.id !== user.id);
+    return { ...state.datas, data: filteredData };
+  });
   const [selectedUser, setSelectedUser] = useState(null); 
 
-  console.log("hyyy",DataList)
+  useEffect(()=>{
+    dispatch(fetchdata())
+    // fetchdata (DataList)
+  },[]);
+
  
   const handleRoomCreation = (userId) => {
     if (selectedUser === userId) {
@@ -30,11 +35,15 @@ const SideBar = () => {
       setSelectedUser(userId);
       // Implement the room creation logic here, e.g., navigate to the chat room with the selected user.
       // You can use the selected user's ID to create a unique room.
-    
+      // const room = `room_${Math.min(userId, user.id)}_${Math.max(userId, user.id)}`;
+      // socket.emit('join_room', room, user.id);
+      // console.log(room,"room")
     }
+    
+ 
   };
+  // debugger
 
-  
   return (
     
     <div className="col-lg-4 col-xxl-3" id="chatTabs" role="tablist">
@@ -92,7 +101,7 @@ const SideBar = () => {
           </div>
 
           <div className="offcanvas-body p-0">
-            <div className="card card-chat-list rounded-end-lg-0 card-body border-end-lg-0 rounded-top-0 overflow-auto">
+            <div className="card card-chat-list rounded-end-lg-0 card-body border-end-lg-0 rounded-top-0 ">
               <form className="position-relative">
                 <input
                   className="form-control py-2"
@@ -115,6 +124,7 @@ const SideBar = () => {
                     {/* maping */}
                  {DataList.data.map((item) => (
                       <li data-bs-dismiss="offcanvas" key={item.id} >
+                       
                         <Link
                         onClick={() => handleRoomCreation(item.id)}
                           to={`/chatBox/${item.id}`}
@@ -140,108 +150,10 @@ const SideBar = () => {
                             </div>
                           </div>
                         </Link>
+                   
                       </li>
                     ))}
-                    {/*              
-              <li data-bs-dismiss="offcanvas">
-                <a href="#chat-2" className="nav-link text-start" id="chat-2-tab" data-bs-toggle="pill" role="tab">
-                  <div className="d-flex">
-                    <div className="flex-shrink-0 avatar me-2 status-offline">
-                      <img className="avatar-img rounded-circle" src={img11} alt=""/>
-                    </div>
-                    <div className="flex-grow-1 d-block">
-                      <h6 className="mb-0 mt-1">Carolyn Ortiz</h6>
-                      <div className="small text-secondary">You missed a call form🤙</div>
-                    </div>
-                  </div>
-                </a>
-              </li> */}
-
-                    {/* <li data-bs-dismiss="offcanvas">
-                <a href="#chat-3" className="nav-link text-start" id="chat-3-tab" data-bs-toggle="pill" role="tab">
-                  <div className="d-flex">
-                    <div className="flex-shrink-0 avatar avatar-story me-2">
-                      <img className="avatar-img rounded-circle" src={img12} alt=""/>
-                    </div>
-                    <div className="flex-grow-1 d-block">
-                      <h6 className="mb-0 mt-1">Billy Vasquez</h6>
-                      <div className="small text-secondary">Day sweetness 😊</div>
-                    </div>
-                  </div>
-                </a>
-              </li>
-             
-              <li data-bs-dismiss="offcanvas">
-                <a href="#chat-4" className="nav-link text-start" id="chat-4-tab" data-bs-toggle="pill" role="tab">
-                  <div className="d-flex">
-                    <div className="flex-shrink-0 avatar me-2">
-                      <ul className="avatar-group avatar-group-two">
-                        <li className="avatar avatar-xs">
-                          <img className="avatar-img rounded-circle" src={img1} alt="avatar"/>
-                        </li>
-                        <li className="avatar avatar-xs">
-                          <img className="avatar-img rounded-circle" src={img2} alt="avatar"/>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="flex-grow-1 d-block">
-                      <h6 className="mb-0 mt-1">Dennis, Ortiz</h6>
-                      <div className="small text-secondary">Ortiz: I'm adding jhon</div>
-                    </div>
-                  </div>
-                </a>
-              </li>
-              */}
-                    {/* <li data-bs-dismiss="offcanvas">
-                <a href="#chat-5" className="nav-link text-start" id="chat-5-tab" data-bs-toggle="pill" role="tab">
-                  <div className="d-flex">
-                    <div className="flex-shrink-0 avatar me-2">
-                      <ul className="avatar-group avatar-group-three">
-                        <li className="avatar avatar-xs">
-                          <img className="avatar-img rounded-circle" src={img3} alt="avatar"/>
-                        </li>
-                        <li className="avatar avatar-xs">
-                          <img className="avatar-img rounded-circle" src={img4} alt="avatar"/>
-                        </li>
-                        <li className="avatar avatar-xs">
-                          <img className="avatar-img rounded-circle" src={img5} alt="avatar"/>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="flex-grow-1 d-block">
-                      <h6 className="mb-0 mt-1">Knight, Billy, Bryan</h6>
-                      <div className="small text-secondary">Billy: Thank you!</div>
-                    </div>
-                  </div>
-                </a>
-              </li>
-
-              <li data-bs-dismiss="offcanvas">
-                <a href="#chat-6" className="nav-link text-start" id="chat-6-tab" data-bs-toggle="pill" role="tab">
-                  <div className="d-flex">
-                    <div className="flex-shrink-0 avatar me-2">
-                      <ul className="avatar-group avatar-group-four">
-                        <li className="avatar avatar-xxs">
-                          <img className="avatar-img rounded-circle" src={img6} alt="avatar"/>
-                        </li>
-                        <li className="avatar avatar-xxs">
-                          <img className="avatar-img rounded-circle" src={img7} alt="avatar"/>
-                        </li>
-                        <li className="avatar avatar-xxs">
-                          <img className="avatar-img rounded-circle" src={img8} alt="avatar"/>
-                        </li>
-                        <li className="avatar avatar-xxs">
-                          <img className="avatar-img rounded-circle" src={imgPH} alt="avatar"/>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="flex-grow-1 d-block overflow-hidden">
-                      <h6 className="mb-0 mt-1 text-truncate w-75">Webestica crew </h6>
-                      <div className="small text-secondary">You: Okay thanks, everyone.</div>
-                    </div>
-                  </div>
-                </a>
-              </li> */}
+           
                   </ul>
                 </div>
               </div>
@@ -250,8 +162,7 @@ const SideBar = () => {
         </div>
       </nav>
     </div>
-    // </div>
-    // </div>
+   
   );
 };
 

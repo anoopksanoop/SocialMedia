@@ -14,9 +14,10 @@ import ProfileAdd from './Home/ProfileAdd';
 import RoomPage from './Main/Videocall/RoomPage';
 // server side
 import io from "socket.io-client"
+import HomePage from './Main/Videocall/HomePage';
 
 
-const socketIO = io.connect("http://localhost:3001");
+let socketIO;;
 
 const Router = () => {
   // server side
@@ -25,7 +26,9 @@ const Router = () => {
   const [messageList, setMessageList] = useState([]);
 
 
-
+  // useEffect(() => {
+   
+  // }, [])
 
   const [login, setLogin] = useState(false)
   const [password, setPassword] = useState([])
@@ -52,14 +55,16 @@ setMessageList
 }
 
 useEffect(() => {
+  
   if(!socket){
+    socketIO = io.connect("http://localhost:3001")
     setSocket(socketIO);
   }
   
   return () => {
     setSocket(null)
   }
-}, [])
+}, [setSocket])
 
   return (
     <div>
@@ -81,7 +86,8 @@ useEffect(() => {
               <Route  path='/GroupForm' element={<GroupForm/>}/>
             <Route path='/ProfileAdd' element={<ProfileAdd/>}/>
             <Route path='/' element={<SignupForm/>}/>
-            <Route path='/room/:RoomId' element={<RoomPage/>}/>
+            <Route path='HomePage' element={<HomePage/>}/>
+            <Route path='/room/:id' element={<RoomPage/>}/>
               </Routes>
             </div>
           </div>

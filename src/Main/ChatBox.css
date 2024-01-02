@@ -45,15 +45,6 @@
   
 
 
-    /* .triangle{
-    border-left: 9px solid transparent;
-    border-right: 0px solid transparent;
-    border-bottom: 10px solid #dcf8c6;
-    width: 2px;
-    height: 2px;
-    margin-left: 99%;
-    } */
-
    
   #you .w-100 {
     width: 100%;
@@ -178,3 +169,17 @@
     margin-top: 0.5rem; /* Update with your desired margin-top */
   }
   
+  .chat-conversation-content{
+    overflow: auto;
+    height: calc(100% - 6.7rem);
+    /* display: -webkit-box; */
+
+    &::-webkit-scrollbar {
+      display: none;
+      
+    }
+  }
+
+  .card-footer{
+  margin-top: -80px;
+  }

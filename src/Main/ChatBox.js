@@ -1,5 +1,5 @@
 import { footContext } from "../Context";
-import { useContext ,useEffect,useState,useCallback} from "react";
+import { useContext ,useEffect,useState} from "react";
 import { useParams } from "react-router";
 import axios from "axios";
 import "./ChatBox.css"
@@ -42,7 +42,7 @@ const ChatBox = () => {
     if (socket && currentUser) {
       
       // Set the room based on sender and receiver's IDs
-      const otherUserId = parseInt(id); // Assuming this is the ID of the other user you are chatting with
+      // const otherUserId = parseInt(id); // Assuming this is the ID of the other user you are chatting with
       const senderId = currentUser.id;
       const room = `room_${Math.min(senderId, user.id)}_${Math.max(senderId, user.id)}`;
       setRoom(room);
@@ -150,7 +150,7 @@ console.log(setShowChat,"showcchat")
                 </div>
                 <div className="d-flex align-items-center">
                   <a
-                    href=""
+                    href=" "
                     className="icon-md rounded-circle btn btn-primary-soft me-2 px-2"
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
@@ -161,7 +161,7 @@ console.log(setShowChat,"showcchat")
                   
                   <a
                   onClick={handleJoinRoom}
-                    href=""
+                    href=" "
                     className="icon-md rounded-circle btn btn-primary-soft me-2 px-2"
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
@@ -243,7 +243,7 @@ console.log(setShowChat,"showcchat")
 
 
         
-        <div className="card-footer">
+        <div className="card-footers">
           <div className="d-sm-flex align-items-end">
             <textarea
               className="form-control mb-sm-0 mb-3"

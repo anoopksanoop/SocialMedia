@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom'
 import { footContext } from "../Context";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../Redux/UserSlice";
-import { fetchdata } from "../Redux/Userdatas";
 import { setUser } from "../Redux/UserSlice";
 
 const Login = ({matchedUser}) => {
@@ -63,7 +62,6 @@ const nav=useNavigate()
       dispatch(
         setUser({
           ...matchedUser,
-          image: matchedUser.image,
           email: matchedUser.email,
           password: matchedUser.password,
           loggedIn: true,

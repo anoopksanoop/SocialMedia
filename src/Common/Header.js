@@ -114,18 +114,7 @@ console.log("image:",user.image)
                     Pages
                   </a>
                   <ul className="dropdown-menu" aria-labelledby="pagesMenu">
-                    <li>
-                      {" "}
-                      <a className="dropdown-item" href="albums.html">
-                        Albums
-                      </a>
-                    </li>
-                    <li>
-                      {" "}
-                      <a className="dropdown-item" href="celebration.html">
-                        Celebration
-                      </a>
-                    </li>
+                
                     <li>
                       {" "}
                       <a className="dropdown-item" href="messaging.html">
@@ -138,12 +127,7 @@ console.log("image:",user.image)
                         Profile
                       </a>
                       <ul className="dropdown-menu" data-bs-popper="none">
-                        <li>
-                          {" "}
-                          <a className="dropdown-item" href="my-profile.html">
-                            Feed
-                          </a>{" "}
-                        </li>
+
                         <li>
                           {" "}
                           <a
@@ -180,24 +164,8 @@ console.log("image:",user.image)
                             Videos
                           </a>{" "}
                         </li>
-                        <li>
-                          {" "}
-                          <a
-                            className="dropdown-item"
-                            href="my-profile-events.html"
-                          >
-                            Events
-                          </a>{" "}
-                        </li>
-                        <li>
-                          {" "}
-                          <a
-                            className="dropdown-item"
-                            href="my-profile-activity.html"
-                          >
-                            Activity
-                          </a>{" "}
-                        </li>
+                       
+                       
                       </ul>
                     </li>
                     <li>
@@ -206,75 +174,29 @@ console.log("image:",user.image)
                         Events
                       </a>
                     </li>
-                    <li>
-                      {" "}
-                      <a className="dropdown-item" href="events-2.html">
-                        Events 2
-                      </a>
-                    </li>
-                    <li>
-                      {" "}
-                      <a className="dropdown-item" href="event-details.html">
-                        Event details
-                      </a>
-                    </li>
-                    <li>
-                      {" "}
-                      <a className="dropdown-item" href="event-details-2.html">
-                        Event details 2
-                      </a>
-                    </li>
-                    <li>
-                      {" "}
-                      <a className="dropdown-item" href="groups.html">
-                        Groups
-                      </a>
-                    </li>
-                    <li>
-                      {" "}
-                      <a className="dropdown-item" href="group-details.html">
-                        Group details
-                      </a>
-                    </li>
+                   
+                  
                     <li>
                       {" "}
                       <a className="dropdown-item" href="post-videos.html">
                         Post videos
                       </a>
                     </li>
-                    <li>
-                      {" "}
-                      <a
-                        className="dropdown-item"
-                        href="post-video-details.html"
-                      >
-                        Post video details
-                      </a>
-                    </li>
+
                     <li>
                       {" "}
                       <a className="dropdown-item" href="post-details.html">
                         Post details
                       </a>
                     </li>
-                    <li>
-                      {" "}
-                      <a className="dropdown-item" href="video-details.html">
-                        Video details
-                      </a>
-                    </li>
+
                     <li>
                       {" "}
                       <a className="dropdown-item" href="blog.html">
                         Blog
                       </a>
                     </li>
-                    <li>
-                      {" "}
-                      <a className="dropdown-item" href="blog-details.html">
-                        Blog details
-                      </a>
-                    </li>
+                   
 
                     <li className="dropdown-divider"></li>
                     <li className="dropdown-submenu dropend">
@@ -355,24 +277,14 @@ console.log("image:",user.image)
                         Settings
                       </a>{" "}
                     </li>
-                    <li>
-                      {" "}
-                      <a className="dropdown-item" href="notifications.html">
-                        Notifications
-                      </a>{" "}
-                    </li>
+                   
                     <li>
                       {" "}
                       <a className="dropdown-item" href="help.html">
                         Help center
                       </a>{" "}
                     </li>
-                    <li>
-                      {" "}
-                      <a className="dropdown-item" href="help-details.html">
-                        Help details
-                      </a>{" "}
-                    </li>
+                    
 
                     <li className="dropdown-submenu dropstart">
                       <a className="dropdown-item dropdown-toggle" href="#">
@@ -401,9 +313,11 @@ console.log("image:",user.image)
 
                         <li>
                           {" "}
+                          <Link to={"/login"}>
                           <a className="dropdown-item" href="" onClick={handleLogout}>
-                            logout
+                            logout  
                           </a>{" "}
+                          </Link>
                         </li>
                         <li>
                           {" "}
@@ -415,33 +329,9 @@ console.log("image:",user.image)
                           </a>{" "}
                         </li>
                         <li className="dropdown-divider"></li>
-                        <li>
-                          {" "}
-                          <a
-                            className="dropdown-item"
-                            href="sign-in-advance.html"
-                          >
-                            Sign in advance
-                          </a>{" "}
-                        </li>
-                        <li>
-                          {" "}
-                          <a
-                            className="dropdown-item"
-                            href="sign-up-advance.html"
-                          >
-                            Sing up advance
-                          </a>{" "}
-                        </li>
-                        <li>
-                          {" "}
-                          <a
-                            className="dropdown-item"
-                            href="forgot-password-advance.html"
-                          >
-                            Forgot password advance
-                          </a>{" "}
-                        </li>
+                       
+                        
+                      
                       </ul>
                     </li>
                     <li>
@@ -450,12 +340,7 @@ console.log("image:",user.image)
                         Error 404
                       </a>{" "}
                     </li>
-                    <li>
-                      {" "}
-                      <a className="dropdown-item" href="offline.html">
-                        Offline
-                      </a>{" "}
-                    </li>
+                    
                     <li>
                       {" "}
                       <a
@@ -647,7 +532,8 @@ console.log("image:",user.image)
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  <img className="avatar-img rounded-2" src={`http://localhost:3001/${user.image}`} alt="" />
+                  {/* <img className="avatar-img rounded-2" src={`http://localhost:3001/${user.image}`} alt="" /> */}
+                      <img className="avatar-img rounded-2" src={user.image} alt="" />
                 </a>
             ):(
 

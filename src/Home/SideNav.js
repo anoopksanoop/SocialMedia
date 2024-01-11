@@ -1,43 +1,108 @@
+
+
+
+
 import React from 'react'
 import img from "../images/01.jpg"
-import homeImg from "../images/home-outline-filled.svg";
 import personImg from "../images/person-outline-filled.svg"
-import earthImg from  "../images/earth-outline-filled.svg"
-import calenderImg from "../images/calendar-outline-filled.svg"
-import chatImg from "../images/chat-outline-filled.svg"
 import notificationImg from "../images/notification-outlined-filled.svg" 
 import cogImg from "../images/cog-outline-filled.svg"
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { selectUser } from '../Redux/UserSlice';
 import { Link } from 'react-router-dom';
-import { footContext } from "../Context";
-import { useContext } from 'react';
 import AOS from 'aos'
-const SideNav = () => {
+import { useState ,useEffect} from 'react'
+import axios from 'axios'
+import SideBar from '../Main/SideBar'
+import "./SideNav.css"
+const SideNav = ({}) => {
+
+
   AOS.init();
 const user =useSelector(selectUser);
-const data = useContext(footContext)
-const { login} = data
+const [Profile, setProfile] = useState([]);
+
+  useEffect(() => {
+    // Fetch posts from the backend when the component mounts
+    const fetchProfile = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/Grouprouter/profile/${user.id}`);
+        setProfile(response.data.Profile);
+      } catch (error) {
+        console.error("Error fetching posts:", error.message);
+        // Handle error cases, if needed
+      }
+    };
+
+    fetchProfile();
+  }, []);
+console.log(Profile)
+
+const [isNavsaVisible, setNavsaVisible] = useState(false);
+
+  const handleClick = () => {
+    setNavsaVisible(!isNavsaVisible);
+  };
+
   return (
     
   <div className="col-lg-3">
 
  
 <div className="d-flex align-items-center d-lg-none" >
-  <button className="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
+  <button  className="navlink  border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar" nClick={handleClick}>
     <span className="btn btn-primary"><i className="fa-solid fa-sliders-h"></i></span>
     <span className="h6 mb-0 fw-bold d-lg-none ms-2">My profile</span>
   </button>
+  {isNavsaVisible &&
+  <ul 
+              className="navsa  nav nav-link-secondary flex-column fw-bold gap-2 "
+            >
+<div className="avatar avatar-lg mt-n5 mb-3" >
+        
+             <Link to={"/ProfileAdd"}>
+       
+              {/* <a href=""><img className="avatar-img rounded border border-white border-3" src={`http://localhost:3001/${user.image}`} alt=''/></a> */}
+              <a href=""><img className="avatar-img rounded border border-white border-3" src={user.image} alt=''/></a>
+
+              </Link>
+
+
+              
+            </div>
+<h5 className="mb-0"> <a href="">{user.name} </a> </h5>
+
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  About
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  Services
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  Clients
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  Contact
+                </a>
+              </li>
+            </ul>}
 </div>
  
-<nav className="navbar navbar-expand-lg mx-0"> 
+<nav className="navbar navbar-expand-lg mx-0" > 
   <div className="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSideNavbar">
      
     <div className="offcanvas-header">
       <button type="button" className="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
      
-    <div className="offcanvas-body d-block px-2 px-lg-0" data-aos="fade-right">
+    <div className="offcanvas-body d-block px-2 px-lg-0" >
      
        
       <div className="card overflow-hidden"> 
@@ -52,9 +117,12 @@ const { login} = data
             <div className="avatar avatar-lg mt-n5 mb-3" >
         
              <Link to={"/ProfileAdd"}>
-              <a href=""><img className="avatar-img rounded border border-white border-3" src={`http://localhost:3001/${user.image}`} alt=''/></a>
+       
+              {/* <a href=""><img className="avatar-img rounded border border-white border-3" src={`http://localhost:3001/${user.image}`} alt=''/></a> */}
+              <a href=""><img className="avatar-img rounded border border-white border-3" src={user.image} alt=''/></a>
+
               </Link>
-                 
+
 
               
             </div>
@@ -75,40 +143,34 @@ const { login} = data
                 <small>Post</small>
               </div>
             
-              <div className="vr"></div>
+              {/* <div className="vr"></div> */}
             
-              <div>
+              {/* <div>
                 <h6 className="mb-0">{user.followers}</h6>
                 <small>Followers</small>
-              </div>
+              </div> */}
              
-              <div className="vr"></div>
+              {/* <div className="vr"></div> */}
               
-              <div>
+              {/* <div>
                 <h6 className="mb-0">{user.followings}</h6>
                 <small>Following</small>
-              </div>
+              </div> */}
             </div>
           
           </div>
 
           
           <ul className="nav nav-link-secondary flex-column fw-bold gap-2">
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <a className="nav-link" href="my-profile.html"> <img className="me-2 h-20px fa-fw" src={homeImg} alt=''/><span>Feed </span></a>
-            </li>
+            </li> */}
             <li className="nav-item">
               <a className="nav-link" href="my-profile-connections.html"> <img className="me-2 h-20px fa-fw" src={personImg} alt=''/><span>Connections </span></a>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="blog.html"> <img className="me-2 h-20px fa-fw" src={earthImg} alt=''/><span>Latest News </span></a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="events.html"> <img className="me-2 h-20px fa-fw" src={calenderImg} alt=''/><span>Events </span></a>
-            </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <a className="nav-link" href="groups.html"> <img className="me-2 h-20px fa-fw" src={chatImg} alt=''/><span>Groups </span></a>
-            </li>
+            </li> */}
             <li className="nav-item">
               <a className="nav-link" href="notifications.html"> <img className="me-2 h-20px fa-fw" src={notificationImg} alt=''/><span>Notifications </span></a>
             </li>

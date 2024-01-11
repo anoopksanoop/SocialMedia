@@ -1,22 +1,33 @@
 import React from 'react'
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { Form, Container, Row, Col } from "react-bootstrap";
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
-import { useSelector } from "react-redux";
+import { useSelector ,useDispatch} from "react-redux";
 import { selectUser } from "../Redux/UserSlice";
+import { addProfile } from '../Redux/Profileslice';
+import { setUser } from '../Redux/UserSlice';
+import SideNav from './SideNav';
+import AOS from "aos";
+
+
 
 const ProfileAdd = () => {
+  AOS.init();
     
   const user = useSelector(selectUser);
+  const dispatch = useDispatch();
     const nav = useNavigate();
     
-    const [image, setImage] = useState("")
+
+   const [image, setImage] = useState("")
 
     const [formImage, setFormImage] = useState({
         userId:user.id,
-        image:""
+        image:" "
     })
+    
+    
 
     
     const handleSubmit = async (e,id) => {
@@ -24,14 +35,24 @@ const ProfileAdd = () => {
         const formdata=new FormData();
         formdata.append('image',image);
         formdata.append('userId', user.id)
-    
+    dispatch(
+  addProfile({
+      image:formImage.image ,
+  
+  })
+)
+dispatch(
+  setUser({
+   image:formImage.image
+  })
+)
+
         try {
           // Send signup data to the server using Axios
           const response = await axios.post(
             "http://localhost:3001/Grouprouter/profile",
             formdata
           );
-    
           console.log(response.data);
         } catch (error) {
           console.log("Error upload:", error.message);
@@ -60,9 +81,13 @@ const HandleDeleteImage=(e)=>{
   }
 console.log("form",formImage)
 
+console.log('adsssssssssssssssssssssssss',  formImage.image)
+
 
   return (
-    <Container >
+    <div style={{display:"flex"}}>
+      <SideNav/>
+    <Container data-aos="fade-left">
     <Row className="justify-content-center mt-5">
       <Col md={6} style={{ marginTop: "30px" }}>
         <Form
@@ -76,7 +101,7 @@ console.log("form",formImage)
           }}
          
         >
-          <h1 className="sigin">Add IMAGE</h1>
+          <h1 className="sigin">CREATE POST</h1>
 
           <label className="form-label">Group picture</label>
 
@@ -129,7 +154,9 @@ console.log("form",formImage)
       </Col>
     </Row>
   </Container>
+  </div>
   )
 }
 
 export default ProfileAdd
+ 

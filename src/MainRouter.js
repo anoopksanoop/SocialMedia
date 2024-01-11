@@ -9,7 +9,7 @@ import Login from './Login/Login';
 import SignupForm from './LSiginupPage/Siginup';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useState } from 'react';
-import GroupForm from './Home/CreateGroup/GroupForm';
+import PostForm from './Home/CreatePost/PostForm';
 import ProfileAdd from './Home/ProfileAdd';
 import RoomPage from './Main/Videocall/RoomPage';
 // server side
@@ -34,6 +34,7 @@ const Router = () => {
   const [password, setPassword] = useState([])
   const [Loginuser, setLoginUser] = useState([])
   const [value, setvalue] = useState();
+
 const user={
   login,
   setLogin,
@@ -77,13 +78,13 @@ useEffect(() => {
            
             {/* {login ? ( */}
             <Route path="/chatBox/:id?" element={<><SideBar/><ChatBox/></>} />,
-            <Route path="/Home/:id" element={<><SideNav /><Condant /><Header/></>} />
+            <Route path="/Home/:id"  element={<><SideNav /><Condant /><Header/></>} />
                {/* ):( */}
         
             <Route path='login' element={<Login/>}/>
            
               {/* )} */}
-              <Route  path='/GroupForm' element={<GroupForm/>}/>
+              <Route  path='/PostForm' element={<PostForm/>}/>
             <Route path='/ProfileAdd' element={<ProfileAdd/>}/>
             <Route path='/' element={<SignupForm/>}/>
             <Route path='HomePage' element={<HomePage/>}/>

@@ -180,7 +180,12 @@
     }
   }
 
-  .card-footers{
-  margin-top: -80px;
+  .card-footers {
+    margin-top: -80px;
+  }
   
+  @media (max-width: 990px) {
+    .card-footers {
+      margin-top: 0px;
+    }
   }

@@ -5,59 +5,76 @@ import "../css/style.css";
 import logo from "../images/logo.svg";
 import logo1 from "../images/07.jpg";
 import logo2 from "../images/02.jpg";
-import { useNavigate } from "react-router";
-import { Link  } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../Redux/UserSlice";
 import { logout } from "../Redux/UserSlice";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { footContext } from "../Context";
-import { useContext } from 'react';
-
+import { useContext, useState } from "react";
+import { Navigate  } from 'react-router-dom'
+import "./Header.css";
 
 function Header() {
- 
   const navigte = new useNavigate();
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
-const data = useContext(footContext)
-const { login} = data
-//console.log(user.email)
-// debugger
-const handleLogout=()=>{
-  dispatch(logout());
+  const data = useContext(footContext);
+  const { Search, setSearch } = data;
+  const location = useLocation();
+  // debugger 
+  //console.log(user.email)
+  // debugger
+  const handleLogout = () => {
+    dispatch(logout());
     // Clear user data from session storage
-    sessionStorage.removeItem('user');
-  // navigte('/login')
-}
+    sessionStorage.removeItem("user");
+    navigte("/login");
+  };
 
-console.log("user",user)
+  if(location.pathname.includes(['/login', '/sign-up'])){
+    if(!user || (user &&  user.id)){
+       <Navigate  to='login'/> 
+      }
+  }
 
- 
+
   function nav() {
     navigte("/ChatBox");
   }
-    function navHome(id) {  
-      navigte(`/Home/${id}`);
-     
-    }
+  function navHome(id) {
+    navigte(`/Home`);
+  }
 
-console.log("image:",user.image)
+
+
+  const [isNavsaVisible, setNavsaVisible] = useState(false);
+  const [isButtonVisible, setButtonVisible] = useState(true);
+
+  const handleClick = () => {
+    setNavsaVisible(!isNavsaVisible);
+    setButtonVisible(false);
+  };
+
+  const HandleClickbtn = () => {
+    setNavsaVisible(!isNavsaVisible);
+    setButtonVisible(true);
+  };
 
   return (
     <div className="App">
-      <header className="navbar-light fixed-top header-static bg-mode" >
+      <header className="navbar-light fixed-top header-static bg-mode">
         <nav className="navbar navbar-expand-lg">
-          <div className="container" >
-            <div className="navbar-brand" href=''>
-              
-                {" "}
-                <img  onClick={()=>navHome(user.id)}
-                  className="light-mode-item navbar-brand-item"
-                  src={logo}
-                  alt="logo"
-                />
-             
+          <div className="container">
+            <div className="navbar-brand" href="">
+              {" "}
+              <img
+                onClick={() => navHome()}
+                className="light-mode-item navbar-brand-item"
+                src={logo}
+                alt="logo"
+              />
               <img
                 className="dark-mode-item navbar-brand-item"
                 src={logo}
@@ -65,22 +82,328 @@ console.log("image:",user.image)
               />
             </div>
 
-            <button
-              className="navbar-toggler ms-auto icon-md btn btn-light p-0"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarCollapse"
-              aria-controls="navbarCollapse"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span className="navbar-toggler-animation">
-                <span></span>
-                <span></span>
-                <span></span>
-              </span>
-            </button>
+            {isButtonVisible && (
+              <button
+                onClick={handleClick}
+                className="navbar-toggler ms-auto icon-md btn btn-light p-0"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <span className="navbar-toggler-animation">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </span>
+              </button>
+            )}
 
+            {isNavsaVisible ? (
+              <div>
+                <ul
+                  className="navbar-nav navbar-nav-scroll ms-auto d-flex flex-row "
+                  style={{ gap: "1rem" }}
+                >
+                  <div className="offcanvas-header">
+                    <button
+                      onClick={HandleClickbtn}
+                      type="button"
+                      className="btn-close text-reset ms-auto"
+                      data-bs-dismiss="offcanvas"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+
+                  <li className="nav-item " onClick={handleLogout}>
+                    <a className="nav-link">Logout</a>
+                  </li>
+
+                  <Link to={"/"}>
+                    <li className="nav-item ">
+                      <a className="nav-link" href="my-profile">
+                        SignIn
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link to={"/login"}>
+                    <li className="nav-item">
+                      <a className="nav-link" href="my-profile">
+                        SignUp
+                      </a>
+                    </li>
+                  </Link>
+                </ul>
+
+                <div className=" navbar-collapse" id="navbarCollapse">
+                  <div className="nav mt-3 mt-lg-0 flex-nowrap align-items-center px-4 px-lg-0">
+                    <div className="nav-item w-100">
+                      <form className="rounded position-relative">
+                        <input
+                          className="form-control ps-5 bg-light"
+                          type="search"
+                          placeholder="Search..."
+                          aria-label="Search"
+                          onChange={(e) => setSearch(e.target.value)}
+                        />
+                        <button
+                          className="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y"
+                          type="submit"
+                        >
+                          <i className="bi bi-search fs-5"> </i>
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+
+                  <ul className="navbar-nav navbar-nav-scroll ms-auto">
+                    <li className="nav-item dropdown">
+                      <a
+                        className="nav-link dropdown-toggle"
+                        href=""
+                        id="pagesMenu"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      >
+                        Pages
+                      </a>
+                      <ul className="dropdown-menu" aria-labelledby="pagesMenu">
+                        <Link to={"/chatBox"}>
+                          <li>
+                            {" "}
+                            <a className="dropdown-item" href="messaging.html">
+                              Messaging
+                            </a>
+                          </li>
+                        </Link>
+
+                        <li className="dropdown-submenu dropend">
+                        <Link to={"/profilepage"}>
+                          <li>
+                            {" "}
+                            <a className="dropdown-item" href="">
+                            Profile
+                            </a>
+                          </li>
+                        </Link>
+
+                          
+                        </li>
+                        <li>
+                          {" "}
+                          <a className="dropdown-item" href="events.html">
+                            Events
+                          </a>
+                        </li>
+
+                        <li>
+                          {" "}
+                          <a className="dropdown-item" href="post-details.html">
+                            Post details
+                          </a>
+                        </li>
+
+                        <li>
+                          {" "}
+                          <a className="dropdown-item" href="">
+                            Blog
+                          </a>
+                        </li>
+
+                        <li className="dropdown-divider"></li>
+                        <li className="dropdown-submenu dropend">
+                          <a className="dropdown-item dropdown-toggle" href="#">
+                            Dropdown levels
+                          </a>
+                          <ul
+                            className="dropdown-menu dropdown-menu-end"
+                            data-bs-popper="none"
+                          >
+                            <li>
+                              {" "}
+                              <a className="dropdown-item" href="#">
+                                Dropdown item
+                              </a>{" "}
+                            </li>
+                            <li>
+                              {" "}
+                              <a className="dropdown-item" href="#">
+                                Dropdown item
+                              </a>{" "}
+                            </li>
+
+                            <li className="dropdown-submenu dropstart">
+                              <a
+                                className="dropdown-item dropdown-toggle"
+                                href="#"
+                              >
+                                Dropdown (start)
+                              </a>
+                              <ul
+                                className="dropdown-menu dropdown-menu-end"
+                                data-bs-popper="none"
+                              >
+                                <li>
+                                  {" "}
+                                  <a className="dropdown-item" href="#">
+                                    Dropdown item
+                                  </a>{" "}
+                                </li>
+                                <li>
+                                  {" "}
+                                  <a className="dropdown-item" href="#">
+                                    Dropdown item
+                                  </a>{" "}
+                                </li>
+                              </ul>
+                            </li>
+                            <li>
+                              {" "}
+                              <a className="dropdown-item" href="#">
+                                Dropdown item
+                              </a>{" "}
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+
+                    <li className="nav-item dropdown">
+                      <a
+                        className="nav-link dropdown-toggle"
+                        href="#"
+                        id="postMenu"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      >
+                        Account{" "}
+                      </a>
+                      <ul className="dropdown-menu" aria-labelledby="postMenu">
+                        <Link to={"/PostForm"}>
+                          <li>
+                            {" "}
+                            <a
+                              className="dropdown-item"
+                              href="create-page.html"
+                            >
+                              Create a Post
+                            </a>
+                          </li>
+                        </Link>
+
+                        <li>
+                          {" "}
+                          <a className="dropdown-item" href="settings.html">
+                            Settings
+                          </a>{" "}
+                        </li>
+
+                        <li className="dropdown-submenu dropend">
+                          <a
+                            className="dropdown-item dropdown-toggle"
+                            href="#!"
+                          >
+                            Help center
+                          </a>
+                          <ul className="dropdown-menu" data-bs-popper="none">
+                            <li>
+                              {" "}
+                              <a
+                                className="dropdown-item"
+                                href="my-profile-connections.html"
+                              >
+                                +91 7306065728
+                              </a>{" "}
+                            </li>
+                            <li>
+                              {" "}
+                              <a
+                                className="dropdown-item"
+                                href="https://github.com/anoopksanoop/SocialMedia"
+                              >
+                                GitHub
+                              </a>{" "}
+                            </li>
+                          </ul>
+                        </li>
+
+                        <li className="dropdown-submenu dropstart">
+                          <a className="dropdown-item dropdown-toggle" href="#">
+                            Authentication
+                          </a>
+                          <ul
+                            className="dropdown-menu dropdown-menu-end"
+                            data-bs-popper="none"
+                          >
+                            <li>
+                              {" "}
+                              <Link to={"/login"}>
+                                <a className="dropdown-item" href="">
+                                  Sign in
+                                </a>{" "}
+                              </Link>
+                            </li>
+                            <li>
+                              {" "}
+                              <Link to={"/"}>
+                                <a className="dropdown-item" href="">
+                                  Sing up
+                                </a>{" "}
+                              </Link>
+                            </li>
+
+                            <li>
+                              {" "}
+                              {/* <Link to={"/login"}> */}
+                              <a
+                                className="dropdown-item"
+                                onClick={handleLogout}
+                              >
+                                logout
+                              </a>{" "}
+                              {/* </Link> */}
+                            </li>
+                            <li>
+                              {" "}
+                              <a
+                                className="dropdown-item"
+                                href="forgot-password.html"
+                              >
+                                Forgot password
+                              </a>{" "}
+                            </li>
+                            <li className="dropdown-divider"></li>
+                          </ul>
+                        </li>
+                        <li>
+                          {" "}
+                          <a className="dropdown-item" href="error-404.html">
+                            Error 404
+                          </a>{" "}
+                        </li>
+
+                        <li>
+                          {" "}
+                          <a
+                            className="dropdown-item"
+                            href="privacy-and-terms.html"
+                          >
+                            Privacy &amp; terms
+                          </a>{" "}
+                        </li>
+                      </ul>
+                    </li>
+
+                   
+                  </ul>
+                </div>
+              </div>
+            ):(
             <div className="collapse navbar-collapse" id="navbarCollapse">
               <div className="nav mt-3 mt-lg-0 flex-nowrap align-items-center px-4 px-lg-0">
                 <div className="nav-item w-100">
@@ -90,6 +413,7 @@ console.log("image:",user.image)
                       type="search"
                       placeholder="Search..."
                       aria-label="Search"
+                      onChange={(e) => setSearch(e.target.value)}
                     />
                     <button
                       className="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y"
@@ -102,6 +426,7 @@ console.log("image:",user.image)
               </div>
 
               <ul className="navbar-nav navbar-nav-scroll ms-auto">
+              {sessionStorage.user && (
                 <li className="nav-item dropdown">
                   <a
                     className="nav-link dropdown-toggle"
@@ -114,74 +439,27 @@ console.log("image:",user.image)
                     Pages
                   </a>
                   <ul className="dropdown-menu" aria-labelledby="pagesMenu">
-                
-                    <li>
-                      {" "}
-                      <a className="dropdown-item" href="messaging.html">
-                        Messaging
-                      </a>
-                    </li>
+                    <Link to={"/chatBox"}>
+                      <li>
+                        {" "}
+                        <a className="dropdown-item" href="messaging.html">
+                          Messaging
+                        </a>
+                      </li>
+                    </Link>
 
                     <li className="dropdown-submenu dropend">
-                      <a className="dropdown-item dropdown-toggle" href="#!">
-                        Profile
-                      </a>
-                      <ul className="dropdown-menu" data-bs-popper="none">
+                        <Link to={"/profilepage"}>
+                          <li>
+                            {" "}
+                            <a className="dropdown-item" href="">
+                            Profile
+                            </a>
+                          </li>
+                        </Link>
 
-                        <li>
-                          {" "}
-                          <a
-                            className="dropdown-item"
-                            href="my-profile-about.html"
-                          >
-                            About
-                          </a>{" "}
+                          
                         </li>
-                        <li>
-                          {" "}
-                          <a
-                            className="dropdown-item"
-                            href="my-profile-connections.html"
-                          >
-                            Connections
-                          </a>{" "}
-                        </li>
-                        <li>
-                          {" "}
-                          <a
-                            className="dropdown-item"
-                            href="my-profile-media.html"
-                          >
-                            Media
-                          </a>{" "}
-                        </li>
-                        <li>
-                          {" "}
-                          <a
-                            className="dropdown-item"
-                            href="my-profile-videos.html"
-                          >
-                            Videos
-                          </a>{" "}
-                        </li>
-                       
-                       
-                      </ul>
-                    </li>
-                    <li>
-                      {" "}
-                      <a className="dropdown-item" href="events.html">
-                        Events
-                      </a>
-                    </li>
-                   
-                  
-                    <li>
-                      {" "}
-                      <a className="dropdown-item" href="post-videos.html">
-                        Post videos
-                      </a>
-                    </li>
 
                     <li>
                       {" "}
@@ -192,11 +470,10 @@ console.log("image:",user.image)
 
                     <li>
                       {" "}
-                      <a className="dropdown-item" href="blog.html">
+                      <a className="dropdown-item" href="">
                         Blog
                       </a>
                     </li>
-                   
 
                     <li className="dropdown-divider"></li>
                     <li className="dropdown-submenu dropend">
@@ -252,7 +529,8 @@ console.log("image:",user.image)
                     </li>
                   </ul>
                 </li>
-
+              )}
+               {sessionStorage.user && (
                 <li className="nav-item dropdown">
                   <a
                     className="nav-link dropdown-toggle"
@@ -265,26 +543,47 @@ console.log("image:",user.image)
                     Account{" "}
                   </a>
                   <ul className="dropdown-menu" aria-labelledby="postMenu">
-                    <li>
-                      {" "}
-                      <a className="dropdown-item" href="create-page.html">
-                        Create a page
-                      </a>
-                    </li>
+                    <Link to={"/PostForm"}>
+                      <li>
+                        {" "}
+                        <a className="dropdown-item" href="create-page.html">
+                          Create a Post
+                        </a>
+                      </li>
+                    </Link>
+
                     <li>
                       {" "}
                       <a className="dropdown-item" href="settings.html">
                         Settings
                       </a>{" "}
                     </li>
-                   
-                    <li>
-                      {" "}
-                      <a className="dropdown-item" href="help.html">
+
+                    <li className="dropdown-submenu dropend">
+                      <a className="dropdown-item dropdown-toggle" href="#!">
                         Help center
-                      </a>{" "}
+                      </a>
+                      <ul className="dropdown-menu" data-bs-popper="none">
+                        <li>
+                          {" "}
+                          <a
+                            className="dropdown-item"
+                            href="my-profile-connections.html"
+                          >
+                            +91 7306065728
+                          </a>{" "}
+                        </li>
+                        <li>
+                          {" "}
+                          <a
+                            className="dropdown-item"
+                            href="https://github.com/anoopksanoop/SocialMedia"
+                          >
+                            GitHub
+                          </a>{" "}
+                        </li>
+                      </ul>
                     </li>
-                    
 
                     <li className="dropdown-submenu dropstart">
                       <a className="dropdown-item dropdown-toggle" href="#">
@@ -297,27 +596,27 @@ console.log("image:",user.image)
                         <li>
                           {" "}
                           <Link to={"/login"}>
-                          <a className="dropdown-item" href="">
-                            Sign in
-                          </a>{" "}
+                            <a className="dropdown-item" href="">
+                              Sign in
+                            </a>{" "}
                           </Link>
                         </li>
                         <li>
                           {" "}
                           <Link to={"/"}>
-                          <a className="dropdown-item" href="">
-                            Sing up
-                          </a>{" "}
+                            <a className="dropdown-item" href="">
+                              Sing up
+                            </a>{" "}
                           </Link>
                         </li>
 
                         <li>
                           {" "}
-                          <Link to={"/login"}>
-                          <a className="dropdown-item" href="" onClick={handleLogout}>
-                            logout  
+                          {/* <Link to={"/login"}> */}
+                          <a className="dropdown-item" onClick={handleLogout}>
+                            logout
                           </a>{" "}
-                          </Link>
+                          {/* </Link> */}
                         </li>
                         <li>
                           {" "}
@@ -329,18 +628,16 @@ console.log("image:",user.image)
                           </a>{" "}
                         </li>
                         <li className="dropdown-divider"></li>
-                       
-                        
-                      
                       </ul>
                     </li>
+                    <Link to={'*'}>
                     <li>
                       {" "}
-                      <a className="dropdown-item" href="error-404.html">
+                      <a className="dropdown-item" href="">
                         Error 404
                       </a>{" "}
                     </li>
-                    
+                    </Link>
                     <li>
                       {" "}
                       <a
@@ -352,24 +649,38 @@ console.log("image:",user.image)
                     </li>
                   </ul>
                 </li>
+                 )}
 
+                {sessionStorage.user ? (
                 <li className="nav-item">
-                  <a className="nav-link" href="my-profile-connections.html">
-                    My network
+                  <a className="nav-link" href="" onClick={handleLogout}>
+                    Logout
                   </a>
                 </li>
+                ):(
+                  <Link to={"/login"}>
+                  <li className="nav-item">
+                  <a className="nav-link" href="">
+                    Login
+                  </a>
+                </li>
+                </Link>
+                )}
               </ul>
             </div>
-
+            )}
             <ul className="nav flex-nowrap align-items-center ms-sm-3 list-unstyled">
-              <li className="nav-item ms-2" onClick={nav}>
-                <div
-                  className="nav-link bg-light icon-md btn btn-light p-0"
-                  href=""
-                >
-                  <i className="bi bi-chat-left-text-fill fs-6"> </i>
-                </div>
-              </li>
+              {sessionStorage.user && (
+                <li className="nav-item ms-2" onClick={nav}>
+                  <div
+                    className="nav-link bg-light icon-md btn btn-light p-0"
+                    href=""
+                  >
+                    <i className="bi bi-chat-left-text-fill fs-6"> </i>
+                  </div>
+                </li>
+              )}
+
               <li className="nav-item ms-2">
                 <a
                   className="nav-link bg-light icon-md btn btn-light p-0"
@@ -520,25 +831,27 @@ console.log("image:",user.image)
               </li>
 
               <li className="nav-item ms-2 dropdown">
-                
-            {sessionStorage.user ? ( 
-                <a
-                  className="nav-link btn icon-md p-0"
-                  href="#"
-                  id="profileDropdown"
-                  role="button"
-                  data-bs-auto-close="outside"
-                  data-bs-display="static"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  {/* <img className="avatar-img rounded-2" src={`http://localhost:3001/${user.image}`} alt="" /> */}
-                      <img className="avatar-img rounded-2" src={user.image} alt="" />
-                </a>
-            ):(
-
-             <h5 style={{color:"white"}}>.</h5> 
-            )}
+                {sessionStorage.user ? (
+                  <a
+                    className="nav-link btn icon-md p-0"
+                    href="#"
+                    id="profileDropdown"
+                    role="button"
+                    data-bs-auto-close="outside"
+                    data-bs-display="static"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    {/* <img className="avatar-img rounded-2" src={`http://localhost:3001/${user.image}`} alt="" /> */}
+                    <img
+                      className="avatar-img rounded-2"
+                      src={user.image}
+                      alt=""
+                    />
+                  </a>
+                ) : (
+                  <h5 style={{ color: "white" }}>.</h5>
+                )}
                 <ul
                   className="dropdown-menu dropdown-animation dropdown-menu-end pt-3 small me-md-n3"
                   aria-labelledby="profileDropdown"

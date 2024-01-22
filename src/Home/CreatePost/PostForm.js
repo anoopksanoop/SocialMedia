@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../Redux/UserSlice";
@@ -8,6 +8,7 @@ import axios from "axios";
 import "./PostForm.css"
 
 const PostForm = () => {
+    const fileUploadRef = useRef();
     const user = useSelector(selectUser);
     const dispatch = useDispatch();
     const navigate = new useNavigate();
@@ -50,9 +51,21 @@ const handleSubmit=async(event,id)=>{
       // Handle error cases, if needed
     }
 
-    navigate(`/Home/${user.id}`);
+    navigate(`/Home/`);
       
 }
+
+const triggerFileUpload = () => {
+  // debugger 
+  // fileUploadRef.current
+  console.log(fileUploadRef)
+  try{
+    fileUploadRef.current.click();
+  }catch(e){
+
+  }
+  
+} 
 
 const handleImageChange = (e) => {
     const selectedFile = e.target.files[0]; // Corrected typo: .files instead of .file
@@ -67,13 +80,13 @@ const handleImageChange = (e) => {
   }
 
   function navHome(id) {
-    navigate(`/Home/${id}`);
+    navigate(`/Home`);
   }
 
-  const defaultImage = 'https://heatherchristenaschmidt.files.wordpress.com/2011/09/facebook_no_profile_pic2-jpg.gif';
+  const defaultImage = 'https://static.cognitoforms.com/app/file-uploads.cea7a48397aad113ab5dce06491381ef.png';
   return (
     <div
-      className="d-flexs justify-content-center align-items-center"
+      className="d-flexs justify-content-center align-items-center mt-5"
       id="modalCreateGroup"
       tabindex="-1"
       aria-labelledby="modalLabelCreateGroup"
@@ -106,19 +119,21 @@ const handleImageChange = (e) => {
                     <div className="avatar-edit">
                       <input
                         type="file"
-                        id="avatarUpload"
+                        id="post-upload"
                         accept="image/*"
                       onChange={handleImageChange}
+                      ref={ fileUploadRef }
                        required
                       />
-                      <label for="avatarUpload"></label>
+                      <label for="post-upload"></label>
                     </div>
 
                     <div className="avatars avatar-xl position-relative">
                       <img
                         id="avatar-preview"
-                        className="avatar-img rounded-circle border border-white border-3 shadow"
+                        className="avatar-img border border-white border-3 shadow"
                         src={tempImagePath || postimage || defaultImage}
+                        onClick={ (e) => triggerFileUpload(e) }
                         alt=""
                       />
                     </div>

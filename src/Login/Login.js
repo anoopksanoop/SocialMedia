@@ -77,7 +77,7 @@ const nav=useNavigate()
         setShowChat(true);
       }
 
-      nav(`/Home/${matchedUser.id}`);
+      nav(`/Home/`);
       setLogin(true);
     } else {
       // alert('User Not Found !!!');

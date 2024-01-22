@@ -15,6 +15,9 @@ import RoomPage from './Main/Videocall/RoomPage';
 // server side
 import io from "socket.io-client"
 import HomePage from './Main/Videocall/HomePage';
+import ProfilePage from './Home/ProfilePage/ProfilePage';
+import PageNotFound from './404/PageNotFound';
+import SinglePost from './Home/Post/SinglePost';
 
 
 let socketIO;;
@@ -34,6 +37,8 @@ const Router = () => {
   const [password, setPassword] = useState([])
   const [Loginuser, setLoginUser] = useState([])
   const [value, setvalue] = useState();
+  
+  const [Search, setSearch] = useState("")
 
 const user={
   login,
@@ -44,7 +49,8 @@ const user={
   setLoginUser,
 value,
 setvalue,
-
+Search,
+setSearch,
 
 // server side
   showChat,
@@ -75,20 +81,22 @@ useEffect(() => {
           <div className="container" style={{ marginTop: "70px" }}>
             <div className="row gx-0">
             <Routes>
-           
+           <Route path='*' element={<><PageNotFound/></>}/>
             {/* {login ? ( */}
             <Route path="/chatBox/:id?" element={<><SideBar/><ChatBox/></>} />,
-            <Route path="/Home/:id"  element={<><SideNav /><Condant /><Header/></>} />
+            <Route path="/Home/:id?"  element={<><SideNav /><Condant /><Header/></>} />
                {/* ):( */}
         
             <Route path='login' element={<Login/>}/>
            
               {/* )} */}
               <Route  path='/PostForm' element={<PostForm/>}/>
+              <Route path='/post/:id' element={<><SideNav /><SinglePost/></>}/>
             <Route path='/ProfileAdd' element={<ProfileAdd/>}/>
             <Route path='/' element={<SignupForm/>}/>
             <Route path='HomePage' element={<HomePage/>}/>
             <Route path='/room/:id' element={<RoomPage/>}/>
+            <Route path='/profilepage' element={<><SideNav/><ProfilePage/></>}/>
               </Routes>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { selectUser } from "../Redux/UserSlice";
 import { selectPost } from "../Redux/Postslice";
@@ -8,32 +8,38 @@ import axios from "axios";
 import AOS from "aos";
 import PostBox from "./PostBox";
 import ProfileAdd from "./ProfileAdd";
-
+import { footContext } from "../Context";
+import { useContext } from 'react';
 
 const Condant = () => {
   AOS.init();
   const post = useSelector(selectPost);
   const user = useSelector(selectUser);
-
-
+  const { id } = useParams();
+  const data = useContext(footContext)
+  const { Search} = data
   const [posts, setPosts] = useState([]);
 
-  useEffect(() => {
-    // Fetch posts from the backend when the component mounts
-    const fetchPosts = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:3001/Grouprouter/posts"
-        );
-        setPosts(response.data.posts);
-      } catch (error) {
-        console.error("Error fetching posts:", error.message);
-        // Handle error cases, if needed
+  const fetchPosts = async () => {
+    setPosts([])
+    try {
+      let url = `http://localhost:3001/Grouprouter/posts`;
+      if(id){
+        url = `${url}/${id};`
       }
-    };
+      const response = await axios.get(url);
+      setPosts(response.data.posts);
+    } catch (error) {
+      console.error("Error fetching posts:", error.message);
+      // Handle error cases, if needed
+    }
+  };
 
+
+
+  useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [ id ])
 
 
   console.log("posts", posts);
@@ -106,9 +112,17 @@ const Condant = () => {
                 <!-- Friends groups tab START --> */}
             <div className="tab-pane fade show active" id="tab-1">
               <div className="row g-4" >
-                {posts.map((Newpost) => {
-                  return <PostBox key={Newpost.id} Newpost={Newpost}  onDelete={handlePostDelete}  />;
+                
+                
+        {posts.filter((Newpost)=>{
+           const postName = Newpost.imgdecs || '';
+           return !Search || postName.toLowerCase().includes(Search.toLowerCase());
+        })
+               .map((Newpost) => {
+                  return <div className={`col-sm-6 col-lg-4`} key={Newpost.id}><PostBox key={Newpost.id} Newpost={Newpost}  onDelete={handlePostDelete}  /></div>;
                 })}
+
+                { !posts.length && <div>Not posts found...</div>}
               </div>
             </div>
           </div>

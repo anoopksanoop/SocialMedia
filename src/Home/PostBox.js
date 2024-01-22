@@ -2,16 +2,14 @@ import { useEffect, useRef } from "react";
 import axios from "axios";
 import { useState } from "react";
 import "./PostBox.css"
+import { Link } from "react-router-dom";
 
 const PostBox = ({ Newpost ,onDelete}) => {
-    const backgroundImage = Newpost.image;
+  // debugger
+    const [ post, setPost ] = useState({});
+    const [ backgroundImage, setBackgroundImage ] = useState();
+   
     let postBoxRef = useRef(null);
-
-    Newpost = {
-      ...Newpost,
-      image: `http://localhost:3001${Newpost.image}`,
-      name: Newpost.imgdecs
-    }
 
     const backgroundStyle = {
     backgroundPosition: "center",backgroundSize: "cover",backgroundRepeat: "no-repeat"}
@@ -19,26 +17,43 @@ const PostBox = ({ Newpost ,onDelete}) => {
     // 
     
 
+
+    // useEffect(() => {
+    //   // debugger 
+    //   setBackgroundImage(Newpost.image);
+    //   return () => {
+
+    //   }
+    // },[])  
+
+
     useEffect(() => {
+      if(postBoxRef){
+        // debugger 
+        postBoxRef.style.backgroundImage = 'url("'+backgroundImage+'")';    
+      }
+    }, [backgroundImage])
+    
+
+    useEffect(() => {
+      setPost(Newpost);
+       
         setTimeout(() => {
             // debugger 
-            console.log("Ref", postBoxRef )
-            if(postBoxRef){
-                // debugger 
-                postBoxRef.style.backgroundImage = 'url("http://localhost:3001/'+backgroundImage+'")';    
-            }
+          // backgroundImage = Newpost.image; 
+           setBackgroundImage(Newpost.image)
             
-        }, 100);
+        }, 200);
         
-    },[ postBoxRef])
+    }, [Newpost])
 
     const handleDeleteClick = async () => {
         try {
           // Make an API call to delete the post
-          await axios.delete(`http://localhost:3001/Grouprouter/posts/${Newpost.id}`);
+          await axios.delete(`http://localhost:3001/Grouprouter/posts/${post.id}`);
     
           // Trigger the onDelete callback to update the state in the parent component
-          onDelete(Newpost.id);
+          onDelete(post.id);
         } catch (error) {
           console.error("Error deleting post:", error.message);
           // Handle error cases, if needed
@@ -51,12 +66,14 @@ const PostBox = ({ Newpost ,onDelete}) => {
         setLiked(!liked);
       };
 
-
+      if(!post){
+        return <></>
+      }
 
 
       
     return (
-      <div className={`col-sm-6 col-lg-4`} id={`post-${Newpost.id}`} key={Newpost.id} >
+      <div  id={`post-${post.id}`} key={post.id} >
       {/* <!-- Card START --> */}
       {/* {group.value.map((item)=>{ */}
       <div className="card-pic" >
@@ -68,11 +85,11 @@ const PostBox = ({ Newpost ,onDelete}) => {
           <div className="card-body text-center pt-0">
           
             <div className="avatar avatar-lg mt-n5 mb-3">
-               <a href="group-details"><img className="avatar-img rounded-circle border border-white border-3 bg-white" 
-               src={Newpost.image} alt=""/></a>
+               <Link to={`/post/${post.id}`}><img className="avatar-img rounded-circle border border-white border-3 bg-white" 
+               src={post.image} alt=""/></Link>
             </div>
             
-            <h5 className="mb-0"> <a href="group-details.html">{Newpost.name || 'General'}</a></h5>
+            <h5 className="mb-0"> <Link to={`/post/${post.id}`}>{post.imgdecs || 'General'}</Link></h5>
           
         </div>
      

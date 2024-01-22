@@ -59,6 +59,7 @@ const ChatBox = () => {
       });
 
       socket.on('receive_message', (data) => {
+       
         if (Array.isArray(data)) {
           // If data is an array, it's the chat history
           setMessageList(data);
@@ -67,11 +68,12 @@ const ChatBox = () => {
           // If data is a single message
           setMessageList((list) =>{
             //debugger 
-            if(list && Array.isArray(list)){
-              return [...list, data]
-            }
-            return [ data ]
-            
+            // if(list && Array.isArray(list)){
+            //   return [...list, data]
+            // }
+            // return [ data ]
+            const isDuplicate = list.some((msg) => msg.message === data.message);
+            return isDuplicate ? list : [...list, data];
           });
         }
       });
@@ -100,12 +102,13 @@ const ChatBox = () => {
       .catch((error) => {
         console.error('Error sending message to server:', error);
       });
-
+    
       await socket.emit('send_message', messageData);
       // setMessageList((list) => {
       //   // debugger 
       //   return [...list, messageData]
       // });
+    
       setCurrentMessage(''); // Clear the input field after sending the message
     }
   };

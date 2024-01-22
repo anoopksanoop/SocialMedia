@@ -6,20 +6,26 @@ if(userString){
   const userParsed = JSON.parse(userString);
   if(userParsed && userParsed.id){
     user = userParsed;
+    // debugger 
+    // if(!user.image.includes('http://localhost:3001')){
+    //   user.image = `http://localhost:3001/${user.image}`;
+    // }
   }
-}
+} 
 export const userSlice = createSlice({
     name: "user",
     initialState: {
       value: user,
     },
     reducers: {
-      setUser: (state, action) => {
+      setUser: (state, { payload }) => {
         const user = {
           ...state.value,
-          ...(action.payload),
+          ...(payload),
+          // image: `http://localhost:3001/${payload.image}`,
           isLoggedIn: true 
-        }
+        } 
+
         state.value = user;
         sessionStorage.setItem('user', JSON.stringify(user))
       },

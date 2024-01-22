@@ -1,7 +1,7 @@
-.navsa{
-    display: none;
-  }
-  
-  .navlink:onclick + .navsa{
-    display: content;
-  }
+/* .navsa {
+  display: none;
+}
+
+.navlink:hover + .navsa {
+  display: contents;
+} */

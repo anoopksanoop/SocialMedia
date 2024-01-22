@@ -24,7 +24,7 @@ const ProfileAdd = () => {
 
     const [formImage, setFormImage] = useState({
         userId:user.id,
-        image:" "
+        image: user.image
     })
     
     
@@ -57,7 +57,7 @@ dispatch(
         } catch (error) {
           console.log("Error upload:", error.message);
         }
-        nav(`/Home/${user.id}`);
+        nav(`/Home/`);
       };
 
       const handleImageChange = (e) => {
@@ -77,7 +77,7 @@ dispatch(
 
 const HandleDeleteImage=(e)=>{
     setImage("")
-    setFormImage({ ...formImage, image: "" });
+    setFormImage({ ...formImage, image: null });
   }
 console.log("form",formImage)
 
@@ -101,9 +101,9 @@ console.log('adsssssssssssssssssssssssss',  formImage.image)
           }}
          
         >
-          <h1 className="sigin">CREATE POST</h1>
+          <h1 className="sigin">Profile Update </h1>
 
-          <label className="form-label">Group picture</label>
+          <label className="form-label">Profile picture</label>
 
 <div className="d-flex align-items-center">
 <div className="avatar-uploader me-3">
@@ -120,16 +120,21 @@ console.log('adsssssssssssssssssssssssss',  formImage.image)
   </div>
 
   <div className="avatar avatar-xl position-relative">
+    {
+
+    formImage.image && 
     <img 
       id="avatar-preview"
       className="avatar-img rounded-circle border border-white border-3 shadow"
       src={formImage.image} 
       alt=""
     />
+}
   </div>
 </div>
 
 <div className="avatar-remove">
+  {!!formImage.image &&
   <button
     type="button"
     style={{marginRight:"25px"}}
@@ -139,6 +144,8 @@ console.log('adsssssssssssssssssssssssss',  formImage.image)
   >
     Delete
   </button>
+}
+
   <button 
     type="button"
     id="avatar-reset-img"

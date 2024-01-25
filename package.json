@@ -33,7 +33,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "npm start",
+    "start": "react-scripts build",
     "build": "react-scripts build",
     "prebuild": "nvm use",
     "test": "react-scripts test",

@@ -94,8 +94,9 @@ const PostBox = ({ Newpost ,onDelete}) => {
         </div>
      
         <div className="card-footer mt-4 text-center">
+        {sessionStorage.user && (
           <a className="btn btn-danger-soft btn-sm" onClick={handleDeleteClick} > Delete picture </a>
-
+        )}
      <button className={`like-button ${liked ? 'liked' : ''}`} onClick={handleLikeClick}>
       <div className="like-wrapper">
         <div className="ripple"></div>

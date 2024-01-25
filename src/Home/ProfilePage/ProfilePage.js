@@ -55,10 +55,16 @@ const ProfilePage = () => {
                
               </div>
               <ul className="social-list ">
+                <Link to={"https://www.facebook.com/anoopsachuz01/"}>
                  <i className=""><RiFacebookCircleLine className='icons' /></i>
+                 </Link>
                 {/* <li><i className="fa fa-dribbble"></i></li> */}
+                <Link to={"https://www.instagram.com/ak._str_om/"}>
                 <i className=""><FaInstagram  className='icons'/></i>
+                </Link>
+                <Link to={"https://www.linkedin.com/in/anoop-k-s-a80784246"}>
                 <i className=""><TbBrandLinkedin className='icons'/></i>
+                </Link>
                 {/* <li><i className="fa fa-google"></i></li>  */}
               </ul>
               <div className="buttons">

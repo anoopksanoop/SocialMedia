@@ -65,8 +65,8 @@ const Condant = () => {
                 {user.name}
               </h1>
             </div> */}
-            <div className="col-sm-6 col-lg-3 ms-lg-auto">
-              {/* <!-- Select Groups --> */}
+            {/* <div className="col-sm-6 col-lg-3 ms-lg-auto">
+             
               <select
                 className="form-select js-choice choice-select-text-none"
                 data-search-enabled="false"
@@ -76,9 +76,10 @@ const Condant = () => {
                 <option value="RA">Recently active</option>
                 <option value="SG">Suggested</option>
               </select>
-            </div>
+            </div> */}
             <div className="col-sm-6 col-lg-3">
               {/* <!-- Button modal --> */}
+              {sessionStorage.user && (
               <Link to={"/PostForm"}>
                 <a
                   className="btn btn-primary-soft ms-auto w-100"
@@ -89,6 +90,7 @@ const Condant = () => {
                   <i className="fa-solid fa-plus pe-1"></i> Create Post
                 </a>
               </Link>
+              )}
             </div>
           </div>
         </div>

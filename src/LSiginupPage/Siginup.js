@@ -55,7 +55,7 @@ const SignupForm = () => {
   
     try {
       // Send signup data to the server using Axios
-      const response = await axios.post(
+      const response =   axios.post(
         "http://localhost:3001/Grouprouter/signup",
         formData
       );

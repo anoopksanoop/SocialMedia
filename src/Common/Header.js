@@ -161,9 +161,10 @@ function Header() {
 
                   <ul className="navbar-nav navbar-nav-scroll ms-auto">
                     <li className="nav-item dropdown">
+                   
                       <a
                         className="nav-link dropdown-toggle"
-                        href=""
+                        // href=""
                         id="pagesMenu"
                         data-bs-toggle="dropdown"
                         aria-haspopup="true"
@@ -171,6 +172,7 @@ function Header() {
                       >
                         Pages
                       </a>
+                    
                       <ul className="dropdown-menu" aria-labelledby="pagesMenu">
                         <Link to={"/chatBox"}>
                           <li>
@@ -199,13 +201,17 @@ function Header() {
                             Events
                           </a>
                         </li>
-
+{/* navigation for post deatils */}
+                    
                         <li>
+                        <Link to={`/Home/${user.id}`}>
                           {" "}
-                          <a className="dropdown-item" href="post-details.html">
+                          <a className="dropdown-item" >
                             Post details
                           </a>
+                          </Link>
                         </li>
+                      
 
                         <li>
                           {" "}
@@ -460,17 +466,20 @@ function Header() {
 
                           
                         </li>
-
+                       
                     <li>
-                      {" "}
-                      <a className="dropdown-item" href="post-details.html">
-                        Post details
-                      </a>
-                    </li>
-
-                    <li>
+                    <Link to={`/Home/${user.id}`}>
                       {" "}
                       <a className="dropdown-item" href="">
+                        Post details
+                      </a>
+                      </Link>
+                    </li>
+                  
+
+                    <li>
+                      {" "}
+                      <a className="dropdown-item" href="/Blodpage">
                         Blog
                       </a>
                     </li>

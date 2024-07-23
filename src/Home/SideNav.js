@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./SideNav.css";
 import { useNavigate } from "react-router-dom";
+import Weather from "../Weather/Weather";
 
 const SideNav = ({}) => {
   AOS.init();
@@ -362,8 +363,14 @@ const SideNav = ({}) => {
                       <span>Settings </span>
                     </a>
                   </li>
+                  {/* weather */}
+                  <li className="nav-item">
+                    <Weather/>
+                  </li>
                 </ul>
               </div>
+
+              
               {/* Card footer */}
               <div className="card-footer text-center py-2">
                 <Link className="btn btn-link btn-sm" to="/profilepage">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import {  useParams } from "react-router";
-import { redirect, Navigate, useNavigate  } from "react-router-dom"
+import { useNavigate  } from "react-router-dom"
 import PostBox from "../PostBox";
 
 const SinglePost = () => {
@@ -51,6 +51,8 @@ const SinglePost = () => {
                     <div className="col-12">
                         {
                             post && <PostBox Newpost={post} onDelete={() => handleDelete() }/>
+                            
+                            
                         }
                     </div>
                 </div>
